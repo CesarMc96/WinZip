@@ -10,7 +10,7 @@ public class AgregarZip {
 
     public AgregarZip(ArrayList archivosAgregar, String contrasena) {
         try {
-            ZipFile zipFile = new ZipFile("C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario//ComprimidoContraseña.zip");
+            ZipFile zipFile = new ZipFile("C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario\\Archivos Comprimidos//ComprimidoContraseña.zip");
 
             ZipParameters parametros = new ZipParameters();
             parametros.setCompressionMethod(Zip4jConstants.COMP_DEFLATE); // set compression method to deflate compression
@@ -27,7 +27,7 @@ public class AgregarZip {
 
     public AgregarZip(ArrayList archivosAgregar) {
         try {
-            ZipFile zipFile = new ZipFile("C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario//Comprimido.zip");
+            ZipFile zipFile = new ZipFile("C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario\\Archivos Comprimidos//Comprimido.zip");
 
             ZipParameters parametros = new ZipParameters();
             parametros.setCompressionMethod(Zip4jConstants.COMP_DEFLATE); // set compression method to deflate compression
