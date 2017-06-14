@@ -55,6 +55,7 @@ public class Ventana extends JFrame {
     private final JMenuItem itmSalir;
     private final JMenuItem itmAcerca;
     private final JMenuItem itmInformacion;
+    private boolean bandera = false;
 
     public Ventana() {
         super.setSize(500, 200);
@@ -131,7 +132,31 @@ public class Ventana extends JFrame {
         //***************************************
         btnArchivo.addActionListener((ActionEvent ae) -> {
 
-            for (int i = 0; i < numeroArchivos; i++) {
+            if (numeroArchivos > 1) {
+                for (int i = 0; i < numeroArchivos; i++) {
+                    JFileChooser fc = new JFileChooser();
+                    int seleccion = fc.showOpenDialog(fc);
+
+                    if (seleccion == JFileChooser.APPROVE_OPTION) {
+                        //Seleccionamos el fichero
+                        File fichero = fc.getSelectedFile();
+
+                        //Escribe el nombre del fichero
+                        nombreArchivos.add(fichero.getName());
+                        archivosAgregar.add(new File(fichero.getAbsolutePath()));
+                    }
+
+                }
+
+                String nombree = (String) nombreArchivos.get(0);
+
+                for (int i = 1; i < numeroArchivos; i++) {
+                    nombree = nombree + "   ||   " + nombreArchivos.get(i);
+                    lblNombreArchivo.setText(nombree);
+                }
+
+            } else if (numeroArchivos == 1) {
+                System.out.println("uno");
                 JFileChooser fc = new JFileChooser();
                 int seleccion = fc.showOpenDialog(fc);
 
@@ -143,14 +168,8 @@ public class Ventana extends JFrame {
                     nombreArchivos.add(fichero.getName());
                     archivosAgregar.add(new File(fichero.getAbsolutePath()));
                 }
-            }
 
-//            lblNombreArchivo.setText((String) nombreArchivos.get(0));
-            String nombree = (String) nombreArchivos.get(0);
-
-            for (int i = 1; i < numeroArchivos; i++) {
-                nombree = nombree + "   ||   " + nombreArchivos.get(i);
-                lblNombreArchivo.setText(nombree);
+                lblNombreArchivo.setText((String) nombreArchivos.get(0));
             }
 
             pnlContraseña.setVisible(true);
@@ -160,10 +179,11 @@ public class Ventana extends JFrame {
 
         //***************************************
         btnComprimir.addActionListener((ActionEvent ae) -> {
-            if (ListaOpcion.getSelectedItem() == "Si") {
+            if (bandera == true) {
+                contrasena = txtEscribeContraseña.getText();
                 AgregarZip agregarZip = new AgregarZip(archivosAgregar, contrasena);
                 JOptionPane.showMessageDialog(this, "Archivo Comprimido");
-            } else {
+            } else if (bandera == false) {
                 AgregarZip agregarZip = new AgregarZip(archivosAgregar);
                 JOptionPane.showMessageDialog(this, "Archivo Comprimido");
             }
@@ -180,20 +200,20 @@ public class Ventana extends JFrame {
                 lblEscribeContraseña = new JLabel("Contraseña: ");
                 txtEscribeContraseña = new JTextField(8);
 
-                contrasena = txtEscribeContraseña.getText();
-
                 pnlContraseña.add(lblEscribeContraseña);
                 pnlContraseña.add(txtEscribeContraseña);
                 lblContraseña.setVisible(false);
                 ListaOpcion.setVisible(false);
                 btnOpcion.setVisible(false);
                 pnlAbajo.setVisible(true);
+                bandera = true;
 
             } else if (ListaOpcion.getSelectedItem() == "No") {
                 pnlAbajo.setVisible(true);
                 lblContraseña.setVisible(false);
                 ListaOpcion.setVisible(false);
                 btnOpcion.setVisible(false);
+                bandera = false;
 
             }
         });
