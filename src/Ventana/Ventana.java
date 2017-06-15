@@ -34,7 +34,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Ventana extends JFrame {
-
+    
     private final JButton btnArchivo;
     private final JButton btnComprimir;
     private final JButton btnDescomprimir;
@@ -77,7 +77,7 @@ public class Ventana extends JFrame {
     private final JLabel lblArchivoDescomprimir;
     private final JLabel lblNombreArchivoDescomprimir;
     private String rutaFicheroDescomprimir;
-
+    
     public Ventana() {
         super.setSize(500, 200);
         super.setLayout(new BorderLayout());
@@ -93,15 +93,15 @@ public class Ventana extends JFrame {
         pnlAB = new JPanel();
         pnlAA.setBackground(Color.WHITE);
         pnlAB.setBackground(Color.WHITE);
-
+        
         lblPregunta = new JLabel("¿Cuantos archivos deseas comprimir?");
         txtPregunta = new JTextField(2);
         btnAceptar = new JButton("Aceptar");
-
+        
         pnlAB.add(btnAceptar);
         pnlAA.add(lblPregunta);
         pnlAA.add(txtPregunta);
-
+        
         pnlArriba.add(pnlAA, BorderLayout.PAGE_START);
         pnlArriba.add(pnlAB, BorderLayout.PAGE_END);
 
@@ -113,10 +113,10 @@ public class Ventana extends JFrame {
         lblNombreArchivo = new JLabel();
         pnlAC.setBackground(Color.WHITE);
         pnlAD.setBackground(Color.WHITE);
-
+        
         btnComprimir = new JButton("Comprimir");
         btnDescomprimir = new JButton("Descomprimir");
-
+        
         pnlAbajo = new JPanel();
         pnlAbajo.setBackground(Color.WHITE);
         pnlAbajo.add(btnComprimir);
@@ -125,12 +125,12 @@ public class Ventana extends JFrame {
         //***************************************
         pnlContraseña = new JPanel();
         pnlContraseña.setBackground(Color.WHITE);
-
+        
         lblContraseña = new JLabel("¿Deseas agregarle contraseña a los archivos?");
         ListaOpcion = new JComboBox(Opciones);
         ListaOpcion.setBackground(Color.white);
         btnOpcion = new JButton("Aceptar");
-
+        
         pnlContraseña.add(lblContraseña);
         pnlContraseña.add(ListaOpcion);
         pnlContraseña.add(btnOpcion);
@@ -140,23 +140,23 @@ public class Ventana extends JFrame {
             pnlAC.add(lblArchivo);
             pnlAC.add(lblNombreArchivo);
             pnlAD.add(btnArchivo);
-
+            
             pnlArriba.add(pnlAC, BorderLayout.PAGE_START);
             pnlArriba.add(pnlAD, BorderLayout.PAGE_END);
             pnlAA.setVisible(false);
             pnlAB.setVisible(false);
-
+            
             numeroArchivos = Integer.parseInt(txtPregunta.getText());
         });
 
         //***************************************
         btnArchivo.addActionListener((ActionEvent ae) -> {
-
+            
             if (numeroArchivos > 1) {
                 for (int i = 0; i < numeroArchivos; i++) {
                     JFileChooser fc = new JFileChooser();
                     int seleccion = fc.showOpenDialog(fc);
-
+                    
                     if (seleccion == JFileChooser.APPROVE_OPTION) {
                         //Seleccionamos el fichero
                         File fichero = fc.getSelectedFile();
@@ -165,20 +165,20 @@ public class Ventana extends JFrame {
                         nombreArchivos.add(fichero.getName());
                         archivosAgregar.add(new File(fichero.getAbsolutePath()));
                     }
-
+                    
                 }
-
+                
                 String nombree = (String) nombreArchivos.get(0);
-
+                
                 for (int i = 1; i < numeroArchivos; i++) {
                     nombree = nombree + "   ||   " + nombreArchivos.get(i);
                     lblNombreArchivo.setText(nombree);
                 }
-
+                
             } else if (numeroArchivos == 1) {
                 JFileChooser fc = new JFileChooser();
                 int seleccion = fc.showOpenDialog(fc);
-
+                
                 if (seleccion == JFileChooser.APPROVE_OPTION) {
                     //Seleccionamos el fichero
                     File fichero = fc.getSelectedFile();
@@ -187,13 +187,13 @@ public class Ventana extends JFrame {
                     nombreArchivos.add(fichero.getName());
                     archivosAgregar.add(new File(fichero.getAbsolutePath()));
                 }
-
+                
                 lblNombreArchivo.setText((String) nombreArchivos.get(0));
             }
-
+            
             pnlContraseña.setVisible(true);
             super.add(pnlContraseña, BorderLayout.CENTER);
-
+            
         });
 
         //***************************************
@@ -211,14 +211,14 @@ public class Ventana extends JFrame {
         //***************************************
         btnDescomprimir.addActionListener((ActionEvent ae) -> {
             String directorioZip = "C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario\\Archivos Comprimidos";
-
+            
             try {
                 FileInputStream fis = new FileInputStream(rutaFicheroDescomprimir);
                 ZipInputStream zis = new ZipInputStream(fis);
                 
                 ZipEntry entrada;
                 
-                while(null != (entrada = zis.getNextEntry())){
+                while (null != (entrada = zis.getNextEntry())) {
                     System.out.println(entrada.toString());
                     FileOutputStream fos = new FileOutputStream(entrada.getName());
                     int leido;
@@ -229,14 +229,16 @@ public class Ventana extends JFrame {
                     fos.close();
                     zis.closeEntry();
                 }
-                    
+                
+                JOptionPane.showMessageDialog(this, "Archivo Descomprimido");
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println("Directorio de salida: " + directorioZip);
-
+            
         });
 
         //***************************************
@@ -244,7 +246,7 @@ public class Ventana extends JFrame {
             if (ListaOpcion.getSelectedItem() == "Si") {
                 lblEscribeContraseña = new JLabel("Contraseña: ");
                 txtEscribeContraseña = new JTextField(8);
-
+                
                 pnlContraseña.add(lblEscribeContraseña);
                 pnlContraseña.add(txtEscribeContraseña);
                 lblContraseña.setVisible(false);
@@ -252,17 +254,17 @@ public class Ventana extends JFrame {
                 btnOpcion.setVisible(false);
                 pnlAbajo.setVisible(true);
                 bandera = true;
-
+                
             } else if (ListaOpcion.getSelectedItem() == "No") {
                 pnlAbajo.setVisible(true);
                 lblContraseña.setVisible(false);
                 ListaOpcion.setVisible(false);
                 btnOpcion.setVisible(false);
                 bandera = false;
-
+                
             }
         });
-
+        
         super.add(pnlArriba, BorderLayout.PAGE_START);
         super.add(pnlAbajo, BorderLayout.PAGE_END);
 
@@ -271,69 +273,70 @@ public class Ventana extends JFrame {
         pnlDescomprimirArriba.setLayout(new BorderLayout());
         pnlDescomprimirAbajo = new JPanel();
         pnlDescomprimirAbajo.setBackground(Color.WHITE);
-
+        
         pnlDA = new JPanel();
         pnlDB = new JPanel();
         pnlDA.setBackground(Color.WHITE);
         pnlDB.setBackground(Color.WHITE);
-
+        
         btnArchivoDescomprimir = new JButton("Seleccionar Archivo.");
         lblArchivoDescomprimir = new JLabel("Archivo: ");
         lblNombreArchivoDescomprimir = new JLabel();
-
+        
         pnlDB.add(btnArchivoDescomprimir);
         pnlDA.add(lblArchivoDescomprimir);
         pnlDA.add(lblNombreArchivoDescomprimir);
-
+        
         pnlDescomprimirArriba.add(pnlDA, BorderLayout.PAGE_START);
         pnlDescomprimirArriba.add(pnlDB, BorderLayout.PAGE_END);
-
+        
         pnlDescomprimirAbajo.add(btnDescomprimir);
 
         //***************************************
         barraMenu = new JMenuBar();
-
+        
         menuSistema = new JMenu("Sistema   ");
         menuAyuda = new JMenu("Ayuda   ");
-
+        
         itmSalir = new JMenuItem("Salir");
         itmAcerca = new JMenuItem("Acerca de");
         itmInformacion = new JMenuItem("Informacion   ");
         itmDescomprimir = new JMenuItem("Descomprimir   ");
         itmComprimir = new JMenuItem("Comprimir   ");
-
+        
         barraMenu.add(menuSistema);
         menuSistema.add(itmComprimir);
         menuSistema.add(itmDescomprimir);
         menuSistema.addSeparator();
         menuSistema.add(itmSalir);
-
+        
         barraMenu.add(menuAyuda);
         menuAyuda.add(itmInformacion);
         menuAyuda.addSeparator();
         menuAyuda.add(itmAcerca);
-
+        
         itmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
         itmInformacion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
         itmAcerca.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.CTRL_DOWN_MASK));
         itmDescomprimir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK));
         itmComprimir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-
+        
         setJMenuBar(this.barraMenu);
-
+        
         itmSalir.addActionListener((ActionEvent ae) -> {
             System.exit(0);
         });
-
+        
         itmAcerca.addActionListener((ActionEvent ae) -> {
             AcercaDe ac = new AcercaDe(this);
             ac.setVisible(true);
         });
-
+        
         itmDescomprimir.addActionListener((ActionEvent ae) -> {
             pnlAbajo.setVisible(false);
             pnlArriba.setVisible(false);
-
+            pnlContraseña.setVisible(false);
+            
             pnlDescomprimirAbajo.setVisible(true);
             pnlDescomprimirArriba.setVisible(true);
             super.add(pnlDescomprimirArriba, BorderLayout.PAGE_START);
@@ -347,7 +350,7 @@ public class Ventana extends JFrame {
             fc.setFileFilter(filtro);
             fc.setCurrentDirectory(new File("C:\\Users\\cesar_000\\Documents\\NetBeansProjects\\Estructura de Datos\\Ordinario\\Archivos Comprimidos"));
             int seleccion = fc.showOpenDialog(fc);
-
+            
             if (seleccion == JFileChooser.APPROVE_OPTION) {
                 //Seleccionamos el fichero
                 File fichero = fc.getSelectedFile();
@@ -357,10 +360,10 @@ public class Ventana extends JFrame {
                 archivosAgregar.add(new File(fichero.getAbsolutePath()));
                 rutaFicheroDescomprimir = fichero.getAbsolutePath();
             }
-
+            
             lblNombreArchivoDescomprimir.setText((String) nombreArchivos.get(0));
         });
-
+        
         itmComprimir.addActionListener((ActionEvent ae) -> {
             pnlDescomprimirAbajo.setVisible(false);
             pnlDescomprimirArriba.setVisible(false);
@@ -370,5 +373,5 @@ public class Ventana extends JFrame {
         //***************************************
         super.setVisible(true);
     }
-
+    
 }
